@@ -1,0 +1,33 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# 1. Load the clean data from Task 1
+df = pd.read_csv('cleaned_data.csv')
+print("--- Cleaned Dataset Loaded for Visualization ---")
+
+# 2. Chart 1: Bar Chart of Passengers per City
+plt.figure(figsize=(6, 4))             # Set the window size
+city_counts = df['City'].value_counts() # Count how many rows per city
+city_counts.plot(kind='bar', color='skyblue', edgecolor='black')
+
+plt.title('Number of Passengers by City')
+plt.xlabel('City')
+plt.ylabel('Passenger Count')
+plt.xticks(rotation=45)                # Rotate city names so they don't overlap
+plt.tight_layout()                     # Adjust layout so everything fits
+plt.savefig('city_distribution.png')   # Save the chart as an image file
+plt.show()                             # Display the chart on screen
+
+print("Chart 1 saved as 'city_distribution.png'")
+
+# 3. Chart 2: Box Plot for Age (To visually see the spread and look for outliers)
+plt.figure(figsize=(5, 5))
+plt.boxplot(df['Age'], patch_artist=True, boxprops=dict(facecolor='lightgreen'))
+
+plt.title('Age Distribution of Passengers')
+plt.ylabel('Age')
+plt.tight_layout()
+plt.savefig('age_boxplot.png')         # Save this chart as well
+plt.show()                             # Display the chart on screen
+
+print("Chart 2 saved as 'age_boxplot.png'")

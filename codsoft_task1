@@ -1,0 +1,31 @@
+import pandas as pd
+
+# Load the dataset into a DataFrame (a table structure)
+# We are using the sample data we created in Step 2
+df = pd.read_csv('sample_data.csv') 
+
+print("--- Data Successfully Loaded ---")
+print("\n--- 1. First 5 Rows of the Dataset ---")
+print(df.head())
+
+print("\n--- 2. Checking for Missing (Null) Values ---")
+print(df.isnull().sum())
+
+print("\n--- 3. Checking for Duplicate Rows ---")
+print(df.duplicated().sum())
+print("\n--- Cleaning Data Now... ---")
+
+# 1. Handle missing values: Calculate average age and fill the blanks
+mean_age = df['Age'].mean()
+df['Age'] = df['Age'].fillna(mean_age)
+
+# 2. Remove duplicate records
+df.drop_duplicates(inplace=True)
+
+# 3. Standardize text: Change "new york" to "New York"
+df['City'] = df['City'].str.title()
+# Save to a new CSV file
+df.to_csv('cleaned_data.csv', index=False)
+
+print("\n--- Success! ---")
+print("Cleaned dataset has been saved as 'cleaned_data.csv'")

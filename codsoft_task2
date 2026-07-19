@@ -1,0 +1,39 @@
+import pandas as pd
+import numpy as np
+
+# 1. Load your clean data from Task 1
+df = pd.read_csv('cleaned_data.csv')
+print("--- Cleaned Dataset Loaded for EDA ---")
+
+# 2. Look at basic descriptive statistics
+print("\n--- 1. Summary Statistics (Numerical Columns) ---")
+# describe() automatically calculates count, mean, standard deviation, min, max, and percentiles
+print(df.describe())
+
+print("\n--- 2. Summary Statistics (Categorical/Text Columns) ---")
+# include=['O'] shows statistics for text columns like 'City' or 'Name'
+print(df.describe(include=['O']))
+
+# 3. Detect Outliers using the Interquartile Range (IQR) method
+print("\n--- 3. Detecting Outliers in Age ---")
+Q1 = df['Age'].quantile(0.25)  # 25th percentile
+Q3 = df['Age'].quantile(0.75)  # 75th percentile
+IQR = Q3 - Q1                  # Interquartile Range
+
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+
+# Look for data points outside the lower and upper bounds
+outliers = df[(df['Age'] < lower_bound) | (df['Age'] > upper_bound)]
+
+if outliers.empty:
+    print("No outliers detected in the Age column using the IQR method.")
+else:
+    print(f"Found {len(outliers)} outlier(s):")
+    print(outliers)
+
+# 4. Identify trends or relationships by grouping data
+print("\n--- 4. Average Age per City ---")
+# This groups your data by 'City' and calculates the average age for each city group
+city_trends = df.groupby('City')['Age'].mean()
+print(city_trends)
